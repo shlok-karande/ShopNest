@@ -1,0 +1,16 @@
+<!doctype html><html xmlns:th="http://www.thymeleaf.org"><body>
+<header th:fragment="header" class="topbar">
+  <a class="brand" th:href="@{/}"><span class="brand-mark">S</span><span>shopnest<small>little finds, better days</small></span></a>
+  <form class="search" th:action="@{/}" method="get">
+    <input type="search" name="q" th:value="${q}" placeholder="Search headphones, bags, home..." aria-label="Search products">
+    <button type="submit" aria-label="Submit search">⌕</button>
+  </form>
+  <nav class="nav-actions">
+    <span th:if="${session.customerName != null}" class="welcome" th:text="'Hi, ' + ${session.customerName}"></span>
+    <a th:if="${session.customerName == null}" th:href="@{/login}">Sign in</a>
+    <a th:href="@{/cart}">Bag <span class="bag-dot">●</span></a>
+    <form th:if="${session.customerName != null}" th:action="@{/logout}" method="post"><button class="link-button" type="submit">Log out</button></form>
+  </nav>
+</header>
+<footer th:fragment="footer" class="footer"><span>ShopNest</span><span>Thoughtful picks for everyday life.</span><span>Academic demo · No real payments</span></footer>
+</body></html>

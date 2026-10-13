@@ -1,0 +1,25 @@
+<!doctype html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ShopNest — everyday finds</title><link rel="stylesheet" th:href="@{/css/style.css}"></head><body>
+<div th:replace="~{fragments :: header}"></div>
+<main>
+<section class="hero">
+  <div class="hero-copy"><span class="eyebrow">THE EVERYDAY EDIT · 01</span><h1>Good things.<br><em>Found here.</em></h1><p>Useful little upgrades for your desk, your commute and your downtime.</p><a class="button button-dark" href="#products">Explore the collection <span>↘</span></a></div>
+  <div class="hero-art"><div class="sun"></div><div class="art-note">CURATED FOR<br>YOUR EVERYDAY</div><div class="hero-shape">✳</div><div class="hero-label">A little joy<br>in every order.</div></div>
+</section>
+<section class="category-strip"><a th:href="@{/(category='Electronics')}">Tech essentials <span>↗</span></a><a th:href="@{/(category='Fashion')}">On the move <span>↗</span></a><a th:href="@{/(category='Home')}">Home comforts <span>↗</span></a></section>
+<section class="catalog" id="products">
+ <div class="section-heading"><div><span class="eyebrow">THE SHOP</span><h2 th:text="${q != '' ? 'Search results' : (selectedCategory != '' ? selectedCategory : 'Picked for your day')}">Picked for your day</h2><p class="muted" th:text="${resultCount + ' items to explore'}">Items to explore</p></div>
+  <form class="category-select" method="get" th:action="@{/}"><input type="hidden" name="q" th:value="${q}"><label for="category">Category</label><select id="category" name="category" onchange="this.form.submit()"><option value="">All items</option><option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}" th:selected="${cat == selectedCategory}"></option></select></form>
+ </div>
+ <div class="product-grid" th:if="${!products.isEmpty()}">
+  <article class="product-card" th:each="product : ${products}">
+   <a class="product-image" th:href="@{/product/{id}(id=${product.id})}"><img th:src="${product.imageUrl}" th:alt="${product.name}" loading="lazy"><span class="badge" th:if="${product.badge != null and !product.badge.isBlank()}" th:text="${product.badge}"></span></a>
+   <div class="product-meta"><span th:text="${product.category}">Category</span><span>SHOPNEST PICK</span></div>
+   <a class="product-name" th:href="@{/product/{id}(id=${product.id})}" th:text="${product.name}">Product name</a>
+   <div class="product-bottom"><strong th:text="${'₹' + #numbers.formatDecimal(product.price,1,'COMMA',2,'POINT')}">₹0</strong><form th:action="@{/cart/add/{id}(id=${product.id})}" method="post"><button class="add-button" type="submit" aria-label="Add to bag">+</button></form></div>
+  </article>
+ </div>
+ <div class="empty-state" th:if="${products.isEmpty()}"><span>⌕</span><h3>No matches just yet</h3><p>Try a shorter search, or explore all of our everyday finds.</p><a class="button button-dark" th:href="@{/}">Show all products</a></div>
+</section>
+<section class="promise"><div><span>01 / SIMPLE</span><h3>Only the useful stuff.</h3><p>Everyday objects with a purpose.</p></div><div><span>02 / EASY</span><h3>A smoother little shop.</h3><p>Search, choose, add to your bag.</p></div><div><span>03 / HONEST</span><h3>Clear from the start.</h3><p>Transparent prices, no demo payments.</p></div></section>
+</main><div th:replace="~{fragments :: footer}"></div></body></html>
